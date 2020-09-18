@@ -1,0 +1,40 @@
+let
+    #"Input Start Date" = #date(2019, 8, 15),
+    #"1st day of the year of the Start Date" = Date.StartOfYear(Date.From(#"Input Start Date")),
+    StartDate = Date.From(#"1st day of the year of the Start Date"),
+    EndDate = Date.From(Date.EndOfYear(DateTime.FixedLocalNow())),
+    CurrentDate = Date.From(DateTime.FixedLocalNow()),
+    CurrentDate_Sem = Date.StartOfWeek(Date.From(DateTime.FixedLocalNow())),
+    CurrentDate_Month = Date.StartOfMonth(Date.From(DateTime.FixedLocalNow())),
+    ListDates = List.Dates(StartDate, Number.RoundDown(Decimal.From(EndDate)) - Number.RoundDown(Decimal.From(StartDate)) +1, #duration(1,0,0,0)),
+    #"Converted to Table" = Table.FromList(ListDates, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    #"Renamed Column1 as Date" = Table.RenameColumns(#"Converted to Table",{{"Column1", "Date"}}),
+    #"Type modifié" = Table.TransformColumnTypes(#"Renamed Column1 as Date",{{"Date", type date}}),
+    #"Date_Sem insérée" = Table.AddColumn(#"Type modifié", "Date_Sem", each Date.StartOfWeek([Date]), type date),
+    #"Date_Month insérée" = Table.AddColumn(#"Date_Sem insérée", "Date_Mois", each Date.StartOfMonth([Date]), type date),
+    #"Added Calendar WeekNum" = Table.AddColumn(#"Date_Month insérée", "WeekNum", each Date.WeekOfYear([Date_Sem], Day.Sunday), Int64.Type),
+    #"Added Calendar MonthNum" = Table.AddColumn(#"Added Calendar WeekNum", "MonthNum", each Date.Month([Date]), Int64.Type),
+    #"Added Month Name" = Table.AddColumn(#"Added Calendar MonthNum", "Month", each Text.Start(Date.MonthName([Date]),4), type text),
+    #"Added Month Name Long" = Table.AddColumn(#"Added Month Name", "MonthLong", each Date.MonthName([Date]), type text),
+    #"Added Calendar Quarter" = Table.AddColumn(#"Added Month Name Long", "Quarter", each "Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+    #"Added Calendar Year" = Table.AddColumn(#"Added Calendar Quarter", "Year", each Date.Year([Date]), Int64.Type),
+    #"Added CurDayOffset" = Table.AddColumn(#"Added Calendar Year", "CurDayOffset", each (Number.From([Date]) - Number.From(CurrentDate)), Int64.Type),
+    #"Added CurWeekOffset" = Table.AddColumn(#"Added CurDayOffset", "CurWeekOffset", each (Number.From([Date_Sem]) - Number.From(CurrentDate_Sem))/7 , Int64.Type),
+    #"Added CurMonthOffset" = Table.AddColumn(#"Added CurWeekOffset", "CurMonthOffset", each ( Date.Year([Date]) - Date.Year(CurrentDate) ) * 12 + Date.Month([Date]) - Date.Month(CurrentDate), Int64.Type),
+    #"Added CurQuarterOffset" = Table.AddColumn(#"Added CurMonthOffset", "CurQuarterOffset", each ( Date.Year([Date]) - Date.Year(CurrentDate) )*4 + Number.RoundUp(Date.Month([Date]) / 3) - Number.RoundUp(Date.Month(CurrentDate) / 3), Int64.Type),
+    #"Added CurYearOffset" = Table.AddColumn(#"Added CurQuarterOffset", "CurYearOffset", each Date.Year([Date]) - Date.Year(CurrentDate), Int64.Type),
+    #"Added MonthYear" = Table.AddColumn(#"Added CurYearOffset", "MonthYear", each [Month] & "-" & Text.End(Text.From([Year]),2), type text),
+    #"Added WeekdayNum" = Table.AddColumn(#"Added MonthYear", "WeekdayNum", each Date.DayOfWeek([Date]), Int64.Type),
+    #"Added Weekday Name" = Table.AddColumn(#"Added WeekdayNum", "Weekday", each Text.Start(Date.DayOfWeekName([Date]),3), type text),
+    #"Added WeekdayWeekend" = Table.AddColumn(#"Added Weekday Name", "Semaine-FDS", each if [WeekdayNum] = 0 or [WeekdayNum] = 6 then "Fin de Semaine" else "Semaine", type text),
+in
+    #"Added WeekdayWeekend"
+
+// Please People, split your timestamps into Dates and Time Columns, your Dataset Size will love you
+
+// Sorry of the bit of french, did have the will to fix it trough
+// Sem = Semaine = Week
+// Mois = Month
+// inséré(e) = inserted
+// modifié = modified
+// FDS = Fin de semaine = Weekend
