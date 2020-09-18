@@ -9,3 +9,7 @@ in
     Result
  in 
 func
+
+//Apply function to a Text column and specify the repeating character to remove.
+//This exemple revoves repeating spaces :
+//= Table.TransformColumns(#"Query or Previous Step", {{"ColumnName", each Remove_Repeating_Char(_," "), type text}})
