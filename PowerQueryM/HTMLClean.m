@@ -8,3 +8,6 @@ let func = (HTML) =>
     in
         SelectText
 in func
+
+//Takes HTML Richtext in your source and removes HTML Tags to leave only the clear text.
+//= Table.TransformColumns(#"Query or previous step",{{"ColumnName", HTML_Clean, type text}})
