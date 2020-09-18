@@ -32,6 +32,8 @@ in
 
 // Please People, split your timestamps into Dates and Time Columns, your Dataset Size will love you
 
+// CurrXXXOffset : (These are the count of periods between said date and now), very usefull to filter to always see the last x days / weeks/ month / Qtr / yrs.
+
 // Sorry of the bit of french, did have the will to fix it trough
 // Sem = Semaine = Week
 // Mois = Month
