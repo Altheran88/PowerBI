@@ -29,8 +29,8 @@ in
 SHPQueries
 
 // This doesn't run in the cloud refresh as it is considered a "dynamic" Web.Contents()
-// I pass the Parameters from the first step of the query being text input to let the user choose the site, listname,
-// pagelimit and the query that is executed on the sharepoint site. Be wary that filtering non-indexed columns will fail if your total number of rows exeeds 5000
+// I pass the Parameters from the first steps of the query being text input to let the user choose the site, listname,
+// pagelimit and the query that is executed on the sharepoint site. Be wary that filtering non-indexed columns will fail if your total number of rows in your list exeeds 5000
 // or the limit configured by your adminitrator wichever is lower.
         
 // Need to try with static values fixed in the function to see if PowerBI online still sees this quesry function as a "Dynamic Web.Contents".
