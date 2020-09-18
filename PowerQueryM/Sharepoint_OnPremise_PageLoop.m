@@ -27,3 +27,8 @@ let SHPQueries =
 
 in 
 SHPQueries
+        
+// This will not refresh in PowerBI online as it is for Sharepoint "ON PREMISE", I am not aware of any way to have your OnPremise Sharepoint
+// accessible from Power BI Online .. also I never looked for it .. Go Online !
+// Very usefull for Excel : For when you on-premise lists get bigger than the limitation your admin put on your site lists, your can't even use the 
+// "export to excel" built-in functionality.
