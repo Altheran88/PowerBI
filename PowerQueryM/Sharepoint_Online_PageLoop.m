@@ -36,5 +36,5 @@ SHPQueries
 // Need to try with static values fixed in the function to see if PowerBI online still sees this quesry function as a "Dynamic Web.Contents".
 // Like writing the URL as :
 // url = (https://companyname.sharepoint.com/sites/sitename&"_api/web/lists/getbytitle('ListName')/items?$top=5000),
-// May be suing the built-in parameters would also fix it.
+// May be using the built-in parameters would also fix it.
 // If you figure it out, make a pull request :)
